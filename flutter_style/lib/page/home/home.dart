@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_style/page/demo/demo.dart';
+import 'package:flutter_style/page/mine/mine.dart';
 import 'package:flutter_style/page/style/style.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,69 +12,102 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _tabIndex = 0;
-  var tabImages;
-  var appBarTitles = ['样式', 'demo'];
-  var _pageList;
-  PageController homePageController;
+  var appBarTitles = ['样式', 'demo', '我的'];
+  PageController _homePageController = PageController();
 
-  Image getTabIcon(int curIndex) {
-    if (curIndex == _tabIndex) {
-      return tabImages[curIndex][1];
-    }
-    return tabImages[curIndex][0];
+  @override
+  void initState() {
+    super.initState();
   }
-  /*
-   * 获取bottomTab的颜色和文字
-   */
-  Text getTabTitle(int curIndex) {
-    if (curIndex == _tabIndex) {
-      return Text(appBarTitles[curIndex],
-          style: TextStyle(fontSize: 14.0, color: const Color(0xff1296db)));
-    } else {
-      return Text(appBarTitles[curIndex],
-          style: TextStyle(fontSize: 14.0, color: const Color(0xff515151)));
-    }
-  }
+
   /*
    * 根据image路径获取图片
    */
   Image getTabImage(path) {
     return Image.asset(path, width: 24.0, height: 24.0);
   }
+  var _pageList = [
+    StylePage(),
+    DemoPage(),
+    MinePage(),
+  ];
 
-  void initData() {
-    /*
-     * 初始化选中和未选中的icon
-     */
-    tabImages = [
-      [getTabImage('images/home.png'), getTabImage('images/home_selected.png')],
-      [getTabImage('images/find.png'), getTabImage('images/find_selected.png')],
+  bulidBottomBarItem() {
+    var tabImages = [
+      ['images/style-edit.png', 'images/style-edit_s.png'],
+      ['images/changyongshili.png', 'images/changyongshili_s.png'],
+      ['images/wode.png', 'images/wode_s.png'],
     ];
-    /*
-     * 三个子界面
-     */
-    _pageList = [
-      new StylePage(),
-      new DemoPage(),
-    ];
+
+    List<BottomNavigationBarItem> bottomBarItem = [];
+    for (var i = 0; i < appBarTitles.length; i++) {
+      bottomBarItem.add(
+        BottomNavigationBarItem(
+          icon: Container(
+            width: 30,
+            height: 30,
+            child: Stack(
+              children: <Widget>[
+                _tabIndex == i
+                    ? Positioned(
+                        left: 5,
+                        top: 4,
+                        child: Image.asset(
+                          '${tabImages[i][0]}',
+                          width: 20,
+                          height: 20,
+                        ))
+                    : Positioned(
+                        left: 5,
+                        top: 5,
+                        child: Image.asset(
+                          '${tabImages[i][1]}',
+                          width: 20,
+                          height: 20,
+                        )),
+              ],
+            ),
+          ),
+          title: _tabIndex == i
+              ? Text(
+                  appBarTitles[i],
+                  style: new TextStyle(
+                    color: const Color(0xff8a8a8a),
+                  ),
+                )
+              : Text(
+                  appBarTitles[i],
+                  style: new TextStyle(
+                    color: const Color(0xffd4237a),
+                  ),
+                ),
+        ),
+      );
+    }
+    return bottomBarItem;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return Scaffold(
       body: PageView(
-        controller: homePageController,
         children: _pageList,
-        onPageChanged: (index){
-          print('------index');
+        controller: _homePageController,
+        onPageChanged: (a){
+          setState(() {
+            _tabIndex = a;
+          });
         },
       ),
       bottomNavigationBar: CupertinoTabBar(
-        items: <BottomNavigationBarItem>[
-          
-        ],
+        items: bulidBottomBarItem(),
+        onTap: (a) {
+          _homePageController.animateToPage(a,duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+          setState(() {
+            _tabIndex = a;
+          });
+        },
       ),
     );
   }
