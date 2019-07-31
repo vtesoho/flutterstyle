@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _tabIndex = 0;
-  var appBarTitles = ['样式', 'demo', '我的'];
   PageController _homePageController = PageController();
 
   @override
@@ -26,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   Image getTabImage(path) {
     return Image.asset(path, width: 24.0, height: 24.0);
   }
+
   var _pageList = [
     StylePage(),
     DemoPage(),
@@ -34,13 +34,13 @@ class _HomePageState extends State<HomePage> {
 
   bulidBottomBarItem() {
     var tabImages = [
-      ['images/style-edit.png', 'images/style-edit_s.png'],
-      ['images/changyongshili.png', 'images/changyongshili_s.png'],
-      ['images/wode.png', 'images/wode_s.png'],
+      ['images/style-edit.png', 'images/style-edit_s.png', '样式'],
+      ['images/changyongshili.png', 'images/changyongshili_s.png', 'demo'],
+      ['images/wode.png', 'images/wode_s.png', '我的'],
     ];
 
     List<BottomNavigationBarItem> bottomBarItem = [];
-    for (var i = 0; i < appBarTitles.length; i++) {
+    for (var i = 0; i < tabImages.length; i++) {
       bottomBarItem.add(
         BottomNavigationBarItem(
           icon: Container(
@@ -70,13 +70,13 @@ class _HomePageState extends State<HomePage> {
           ),
           title: _tabIndex == i
               ? Text(
-                  appBarTitles[i],
+                  tabImages[i][2],
                   style: new TextStyle(
                     color: const Color(0xff8a8a8a),
                   ),
                 )
               : Text(
-                  appBarTitles[i],
+                  tabImages[i][2],
                   style: new TextStyle(
                     color: const Color(0xffd4237a),
                   ),
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         children: _pageList,
         controller: _homePageController,
-        onPageChanged: (a){
+        onPageChanged: (a) {
           setState(() {
             _tabIndex = a;
           });
@@ -103,7 +103,8 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CupertinoTabBar(
         items: bulidBottomBarItem(),
         onTap: (a) {
-          _homePageController.animateToPage(a,duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+          _homePageController.animateToPage(a,
+              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           setState(() {
             _tabIndex = a;
           });
