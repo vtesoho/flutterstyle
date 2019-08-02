@@ -62,6 +62,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   bool leading = false;
   String title = 'AppBar';
   List<Widget> actions;
+  int actionsRadio = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +72,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         title: Text('${title}'),
         elevation: elevation,  //阴影
         actions: actions,
+        flexibleSpace: flexibleSpace(),
       ),
       body: Column(
         children: <Widget>[
@@ -83,6 +85,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     );
   }
 
+  Widget flexibleSpace(){
+    return Container(
+      height: 200,
+      color: Colors.red,
+      child: Text('data'),
+    );
+  }
+
   Widget actionsChange(){
     return Row(
       children: <Widget>[
@@ -91,41 +101,48 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           child: Text('右边按纽区域'),
         ),
         Expanded(
-          flex: 3,
+          flex: 4,
           child: Row(
             children: <Widget>[
-              PopupMenuButton(
-                itemBuilder:(context ){
-                  
-                }
-              ),
               Radio(
-                value: actionChangeItemMore(),
-                groupValue: 'actions',
+                value: 1,
+                groupValue: actionsRadio,
                 onChanged: (val){
-                  actions = val;
+                  actionsRadio = val;
+                  actions = actionChangeItemOne();
                   print('${val}');
                   setState(() {
                     
                   });
                 },
               ),
-              Text('普通按纽'),
-              SizedBox(
-                width: 50,
-              ),
+              Text('一个按纽'),
               Radio(
-                value: actionChangeItemOne(),
-                groupValue: 'actions',
+                value: 2,
+                groupValue: actionsRadio,
                 onChanged: (val){
                   print('${val}');
-                  actions = val;
+                  actionsRadio = val;
+                  actions = actionChangeItemMore();
                   setState(() {
                     
                   });
                 },
               ),
-              Text('二级按纽'),
+              Text('多个按纽'),
+              Radio(
+                value: 3,
+                groupValue: actionsRadio,
+                onChanged: (val){
+                  actionsRadio = val;
+                  actions = actionChangeItemPopup();
+                  print('${val}');
+                  setState(() {
+                    
+                  });
+                },
+              ),
+              Text('弹出按纽'),
             ],
           ),
         ),
@@ -144,6 +161,24 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     data.add(Icon(Icons.edit),);
     data.add(Icon(Icons.map),);
     data.add(Icon(Icons.email),);
+    return data;
+  }
+
+  List<Widget> actionChangeItemPopup(){
+    List<Widget> data = [];
+    data.add(PopupMenuButton(
+        itemBuilder: (BuildContext context) =><PopupMenuItem<String>>[
+          PopupMenuItem(
+              value:"选项一的内容",
+              child: new Text("选项一")
+          ),
+          PopupMenuItem(
+            value: "选项二的内容",
+              child: new Text("选项二")
+          )
+        ]
+      ),
+    );
     return data;
   }
 
