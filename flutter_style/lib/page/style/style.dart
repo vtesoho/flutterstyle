@@ -57,12 +57,21 @@ class AppBarWidget extends StatefulWidget {
   _AppBarWidgetState createState() => _AppBarWidgetState();
 }
 
-class _AppBarWidgetState extends State<AppBarWidget> {
+class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderStateMixin {
   double elevation = 0.0;
   bool leading = false;
   String title = 'AppBar';
   List<Widget> actions;
   int actionsRadio = 0;
+  var controller;
+  @override
+  void initState() {
+    controller = TabController(
+      length: 3,
+      vsync: this, //动画效果的异步处理，默认格式，背下来即可
+    );
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +82,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         elevation: elevation,  //阴影
         actions: actions,
         flexibleSpace: flexibleSpace(),
+        bottom: TabBar(
+          controller: controller,
+          tabs: <Tab>[
+            Tab(text: "tab1",),
+            Tab(text: "tab2",),
+            Tab(text: "tab3",),
+          ]
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -80,10 +97,20 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           leadingChange(),
           titleChange(),
           actionsChange(),
+          TabBarView(
+            controller: controller,
+            children: <Widget>[
+              Container(child: Text('data'),),
+              Container(child: Text('data1'),),
+              Container(child: Text('data2'),),
+            ],
+          )
         ],
       ),
     );
   }
+
+
 
   Widget flexibleSpace(){
     return Container(
