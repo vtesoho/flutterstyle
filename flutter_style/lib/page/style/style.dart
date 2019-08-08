@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_style/page/style/dropDownButtonDemo.dart';
 
 class StylePage extends StatefulWidget {
   StylePage({Key key}) : super(key: key);
@@ -31,11 +32,21 @@ class _StylePageState extends State<StylePage> {
               height: 50,
             ),
           ),
-          Container(
-            color: Colors.red,
-            child: Text('appbar'),
-            width: 50,
-            height: 50,
+          GestureDetector(
+            onTap: (){
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => DropDownButtonDEMO(),
+                )
+              );
+            },
+            child: Container(
+              color: Colors.red,
+              child: Text('DropDownButton'),
+              width: 50,
+              height: 50,
+            ),
           ),
           Container(
             color: Colors.red,
@@ -63,6 +74,10 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
   String title = 'AppBar';
   List<Widget> actions;
   int actionsRadio = 0;
+  var backgroundColor;
+  int backgroundColorRadio = 0;
+  var brightness;
+  int brightnessRadio = 0;
   var controller;
   @override
   void initState() {
@@ -81,15 +96,17 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
         title: Text('${title}'),
         elevation: elevation,  //阴影
         actions: actions,
-        flexibleSpace: flexibleSpace(),
-        bottom: TabBar(
-          controller: controller,
-          tabs: <Tab>[
-            Tab(text: "tab1",),
-            Tab(text: "tab2",),
-            Tab(text: "tab3",),
-          ]
-        ),
+        // flexibleSpace: flexibleSpace(),
+        // bottom: TabBar(
+        //   controller: controller,
+        //   tabs: <Tab>[
+        //     Tab(text: "tab1",),
+        //     Tab(text: "tab2",),
+        //     Tab(text: "tab3",),
+        //   ]
+        // ),
+        backgroundColor:backgroundColor,
+        brightness:brightness,
       ),
       body: Column(
         children: <Widget>[
@@ -97,20 +114,121 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
           leadingChange(),
           titleChange(),
           actionsChange(),
-          TabBarView(
-            controller: controller,
-            children: <Widget>[
-              Container(child: Text('data'),),
-              Container(child: Text('data1'),),
-              Container(child: Text('data2'),),
-            ],
-          )
+          backgroundColorChange(),
+          brightnessChange(),
+          // TabBarView(
+          //   controller: controller,
+          //   children: <Widget>[
+          //     Container(child: Text('data'),),
+          //     Container(child: Text('data1'),),
+          //     Container(child: Text('data2'),),
+          //   ],
+          // )
         ],
       ),
     );
   }
 
+  Widget brightnessChange(){
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('bar图标颜色'),
+        ),
+        Expanded(
+          flex: 3,
+          child: Row(
+            children: <Widget>[
+              Radio(
+                value: 0,
+                groupValue: brightnessRadio,
+                onChanged: (int val){
+                  brightnessRadio = val;
+                  brightness =  Theme.of(context).primaryColorBrightness;
+                  print('${val}');
+                  setState(() {
+                    
+                  });
+                },
+              ),
+              Text('默认'),
+              Radio(
+                value: 1,
+                groupValue: brightnessRadio,
+                onChanged: (int val){
+                  print('${val}');
+                  brightnessRadio = val;
+                  brightness =  Brightness.dark;
+                  setState(() {
+                    
+                  });
+                },
+              ),
+              Text('白色'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
+  Widget backgroundColorChange(){
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('背景颜色'),
+        ),
+        Expanded(
+          flex: 3,
+          child: Row(
+            children: <Widget>[
+              Radio(
+                value: 0,
+                groupValue: backgroundColorRadio,
+                onChanged: (int val){
+                  backgroundColorRadio = val;
+                  backgroundColor =  Theme.of(context).primaryColor;
+                  print('${val}');
+                  setState(() {
+                    
+                  });
+                },
+              ),
+              Text('默认'),
+              Radio(
+                value: 1,
+                groupValue: backgroundColorRadio,
+                onChanged: (int val){
+                  print('${val}');
+                  backgroundColorRadio = val;
+                  backgroundColor =  Colors.red;
+                  setState(() {
+                    
+                  });
+                },
+              ),
+              Text('红色'),
+              Radio(
+                value: 2,
+                groupValue: backgroundColorRadio,
+                onChanged: (int val){
+                  print('${val}');
+                  backgroundColorRadio = val;
+                  backgroundColor =  Colors.yellow;
+                  setState(() {
+                    
+                  });
+                },
+              ),
+              Text('黄色'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget flexibleSpace(){
     return Container(
