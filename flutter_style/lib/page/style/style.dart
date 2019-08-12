@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_style/page/style/dropDownButtonDemo.dart';
 
 class StylePage extends StatefulWidget {
@@ -77,6 +78,9 @@ class _AppBarWidgetState extends State<AppBarWidget>
   var brightness;
   int brightnessRadio = 0;
   var controller;
+  bool centerTitle;
+  double toolbarOpacity = 1.0;
+  // int centerTitleRadio = 0;
   @override
   void initState() {
     controller = TabController(
@@ -96,6 +100,7 @@ class _AppBarWidgetState extends State<AppBarWidget>
         title: Text('${title}'),
         elevation: elevation, //阴影
         actions: actions,
+        centerTitle: centerTitle,
         // flexibleSpace: flexibleSpace(),
         // bottom: TabBar(
         //   controller: controller,
@@ -107,6 +112,7 @@ class _AppBarWidgetState extends State<AppBarWidget>
         // ),
         backgroundColor: backgroundColor,
         brightness: brightness,
+        toolbarOpacity: toolbarOpacity,
       ),
       drawer: Drawer(
         child: Container(
@@ -127,6 +133,9 @@ class _AppBarWidgetState extends State<AppBarWidget>
               Divider(),
               brightnessChange(),
               Divider(),
+              centerTitleChange(),
+              Divider(),
+              toolbarOpacityChange(),
               // TabBarView(
               //   controller: controller,
               //   children: <Widget>[
@@ -140,18 +149,86 @@ class _AppBarWidgetState extends State<AppBarWidget>
         ),
       ),
       body: Container(
-        child: Column(
-          children: <Widget>[
+        child: Center(
+          child:
             Builder(builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
+              return GestureDetector(
+                onTap: (){
                   Scaffold.of(context).openDrawer(); //打开结束方向抽屉布局
-                });
+                },
+                child: Container(
+                  child: Text('修改配置'),
+                ),
+              );
             }),
-          ],
         ),
       ),
+    );
+  }
+
+  Widget centerTitleChange(){
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('标题居中'),
+        ),
+        Expanded(
+          flex: 3,
+          child: Row(
+            children: <Widget>[
+              Radio(
+                value: true,
+                groupValue: centerTitle,
+                onChanged: (bool val) {
+                  centerTitle = val;
+                  print('${val}');
+                  setState(() {});
+                },
+              ),
+              Text('居中'),
+              Radio(
+                value: false,
+                groupValue: centerTitle,
+                onChanged: (bool val) {
+                  print('${val}');
+                  centerTitle = val;
+                  setState(() {});
+                },
+              ),
+              Text('不居中 '),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget toolbarOpacityChange(){
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text('设置导航透明'),
+        ),
+        Expanded(
+          flex: 3,
+          child: Slider(
+            value: toolbarOpacity,
+            max: 1.0,
+            min: 0.0,
+            onChanged: (double val) {
+              setState(() {
+                toolbarOpacity = val;
+              });
+            },
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text('${toolbarOpacity.toStringAsFixed(2)}'),
+        )
+      ],
     );
   }
 
