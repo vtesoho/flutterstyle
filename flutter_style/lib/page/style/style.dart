@@ -17,13 +17,12 @@ class _StylePageState extends State<StylePage> {
       body: Wrap(
         children: <Widget>[
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => AppBarWidget(),
-                )
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AppBarWidget(),
+                  ));
             },
             child: Container(
               color: Colors.red,
@@ -33,13 +32,12 @@ class _StylePageState extends State<StylePage> {
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => DropDownButtonDEMO(),
-                )
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DropDownButtonDEMO(),
+                  ));
             },
             child: Container(
               color: Colors.red,
@@ -60,15 +58,15 @@ class _StylePageState extends State<StylePage> {
   }
 }
 
-
-
 class AppBarWidget extends StatefulWidget {
   AppBarWidget({Key key}) : super(key: key);
 
   _AppBarWidgetState createState() => _AppBarWidgetState();
 }
 
-class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderStateMixin {
+class _AppBarWidgetState extends State<AppBarWidget>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   double elevation = 0.0;
   bool leading = false;
   String title = 'AppBar';
@@ -87,14 +85,16 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        key: _scaffoldKey,
         // leading: ,
-        automaticallyImplyLeading: leading, //去除默认返回按钮 
+        automaticallyImplyLeading: leading, //去除默认返回按钮
         title: Text('${title}'),
-        elevation: elevation,  //阴影
+        elevation: elevation, //阴影
         actions: actions,
         // flexibleSpace: flexibleSpace(),
         // bottom: TabBar(
@@ -105,31 +105,57 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
         //     Tab(text: "tab3",),
         //   ]
         // ),
-        backgroundColor:backgroundColor,
-        brightness:brightness,
+        backgroundColor: backgroundColor,
+        brightness: brightness,
       ),
-      body: Column(
-        children: <Widget>[
-          elevationChange(),
-          leadingChange(),
-          titleChange(),
-          actionsChange(),
-          backgroundColorChange(),
-          brightnessChange(),
-          // TabBarView(
-          //   controller: controller,
-          //   children: <Widget>[
-          //     Container(child: Text('data'),),
-          //     Container(child: Text('data1'),),
-          //     Container(child: Text('data2'),),
-          //   ],
-          // )
-        ],
+      drawer: Drawer(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 60,
+              ),
+              elevationChange(),
+              Divider(),
+              leadingChange(),
+              Divider(),
+              titleChange(),
+              Divider(),
+              actionsChange(),
+              Divider(),
+              backgroundColorChange(),
+              Divider(),
+              brightnessChange(),
+              Divider(),
+              // TabBarView(
+              //   controller: controller,
+              //   children: <Widget>[
+              //     Container(child: Text('data'),),
+              //     Container(child: Text('data1'),),
+              //     Container(child: Text('data2'),),
+              //   ],
+              // )
+            ],
+          ),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Builder(builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer(); //打开结束方向抽屉布局
+                });
+            }),
+          ],
+        ),
       ),
     );
   }
 
-  Widget brightnessChange(){
+  Widget brightnessChange() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -143,26 +169,22 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
               Radio(
                 value: 0,
                 groupValue: brightnessRadio,
-                onChanged: (int val){
+                onChanged: (int val) {
                   brightnessRadio = val;
-                  brightness =  Theme.of(context).primaryColorBrightness;
+                  brightness = Theme.of(context).primaryColorBrightness;
                   print('${val}');
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('默认'),
               Radio(
                 value: 1,
                 groupValue: brightnessRadio,
-                onChanged: (int val){
+                onChanged: (int val) {
                   print('${val}');
                   brightnessRadio = val;
-                  brightness =  Brightness.dark;
-                  setState(() {
-                    
-                  });
+                  brightness = Brightness.dark;
+                  setState(() {});
                 },
               ),
               Text('白色'),
@@ -173,7 +195,7 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
   }
 
-  Widget backgroundColorChange(){
+  Widget backgroundColorChange() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -187,39 +209,33 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
               Radio(
                 value: 0,
                 groupValue: backgroundColorRadio,
-                onChanged: (int val){
+                onChanged: (int val) {
                   backgroundColorRadio = val;
-                  backgroundColor =  Theme.of(context).primaryColor;
+                  backgroundColor = Theme.of(context).primaryColor;
                   print('${val}');
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('默认'),
               Radio(
                 value: 1,
                 groupValue: backgroundColorRadio,
-                onChanged: (int val){
+                onChanged: (int val) {
                   print('${val}');
                   backgroundColorRadio = val;
-                  backgroundColor =  Colors.red;
-                  setState(() {
-                    
-                  });
+                  backgroundColor = Colors.red;
+                  setState(() {});
                 },
               ),
               Text('红色'),
               Radio(
                 value: 2,
                 groupValue: backgroundColorRadio,
-                onChanged: (int val){
+                onChanged: (int val) {
                   print('${val}');
                   backgroundColorRadio = val;
-                  backgroundColor =  Colors.yellow;
-                  setState(() {
-                    
-                  });
+                  backgroundColor = Colors.yellow;
+                  setState(() {});
                 },
               ),
               Text('黄色'),
@@ -230,7 +246,7 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
   }
 
-  Widget flexibleSpace(){
+  Widget flexibleSpace() {
     return Container(
       height: 200,
       color: Colors.red,
@@ -238,7 +254,7 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
   }
 
-  Widget actionsChange(){
+  Widget actionsChange() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -247,44 +263,39 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
         ),
         Expanded(
           flex: 4,
-          child: Row(
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
               Radio(
                 value: 1,
                 groupValue: actionsRadio,
-                onChanged: (val){
+                onChanged: (val) {
                   actionsRadio = val;
                   actions = actionChangeItemOne();
                   print('${val}');
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('一个按纽'),
               Radio(
                 value: 2,
                 groupValue: actionsRadio,
-                onChanged: (val){
+                onChanged: (val) {
                   print('${val}');
                   actionsRadio = val;
                   actions = actionChangeItemMore();
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('多个按纽'),
               Radio(
                 value: 3,
                 groupValue: actionsRadio,
-                onChanged: (val){
+                onChanged: (val) {
                   actionsRadio = val;
                   actions = actionChangeItemPopup();
                   print('${val}');
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('弹出按纽'),
@@ -295,39 +306,41 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
   }
 
-  List<Widget> actionChangeItemOne(){
+  List<Widget> actionChangeItemOne() {
     List<Widget> data = [];
-    data.add(Icon(Icons.edit),);
-    return data;
-  }
-
-  List<Widget> actionChangeItemMore(){
-    List<Widget> data = [];
-    data.add(Icon(Icons.edit),);
-    data.add(Icon(Icons.map),);
-    data.add(Icon(Icons.email),);
-    return data;
-  }
-
-  List<Widget> actionChangeItemPopup(){
-    List<Widget> data = [];
-    data.add(PopupMenuButton(
-        itemBuilder: (BuildContext context) =><PopupMenuItem<String>>[
-          PopupMenuItem(
-              value:"选项一的内容",
-              child: new Text("选项一")
-          ),
-          PopupMenuItem(
-            value: "选项二的内容",
-              child: new Text("选项二")
-          )
-        ]
-      ),
+    data.add(
+      Icon(Icons.edit),
     );
     return data;
   }
 
-  Widget titleChange(){
+  List<Widget> actionChangeItemMore() {
+    List<Widget> data = [];
+    data.add(
+      Icon(Icons.edit),
+    );
+    data.add(
+      Icon(Icons.map),
+    );
+    data.add(
+      Icon(Icons.email),
+    );
+    return data;
+  }
+
+  List<Widget> actionChangeItemPopup() {
+    List<Widget> data = [];
+    data.add(
+      PopupMenuButton(
+          itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+                PopupMenuItem(value: "选项一的内容", child: new Text("选项一")),
+                PopupMenuItem(value: "选项二的内容", child: new Text("选项二"))
+              ]),
+    );
+    return data;
+  }
+
+  Widget titleChange() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -341,7 +354,7 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
               Container(
                 width: 150,
                 child: TextField(
-                  onChanged: (val){
+                  onChanged: (val) {
                     setState(() {
                       title = val;
                     });
@@ -359,7 +372,7 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
   }
 
-  Widget leadingChange(){
+  Widget leadingChange() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -373,27 +386,20 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
               Radio(
                 value: false,
                 groupValue: leading,
-                onChanged: (bool val){
+                onChanged: (bool val) {
                   leading = val;
                   print('${val}');
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('不显示'),
-              SizedBox(
-                width: 50,
-              ),
               Radio(
                 value: true,
                 groupValue: leading,
-                onChanged: (bool val){
+                onChanged: (bool val) {
                   print('${val}');
                   leading = val;
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
               Text('显示'),
@@ -408,7 +414,7 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
     );
   }
 
-  Widget elevationChange(){
+  Widget elevationChange() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -430,10 +436,9 @@ class _AppBarWidgetState extends State<AppBarWidget> with SingleTickerProviderSt
         ),
         Expanded(
           flex: 1,
-          child: Text('${elevation}'),
+          child: Text('${elevation.toStringAsFixed(2)}'),
         )
       ],
     );
   }
-
 }
