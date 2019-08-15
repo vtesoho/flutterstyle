@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_style/page/demo/async_demo.dart';
 
 class DemoPage extends StatefulWidget {
   DemoPage({Key key}) : super(key: key);
@@ -9,8 +10,39 @@ class DemoPage extends StatefulWidget {
 class _DemoPageState extends State<DemoPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('demo'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('demo'),
+      ),
+      body: Wrap(
+        children: <Widget>[
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AsyncDemo(),
+            ));},
+            'async',
+          ),
+        ],
+      ),
     );
   }
+
+
+
+  Widget styleItem(jumpClass,title){
+    return GestureDetector(
+      onTap: () {
+        jumpClass();
+      },
+      child: Container(
+        color: Colors.red,
+        child: Text('${title}'),
+        width: 50,
+        height: 50,
+      ),
+    );
+  }
+
 }
