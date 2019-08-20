@@ -147,7 +147,7 @@ class _AppBarWidgetState extends State<AppBarWidget>
                 value: false,
                 groupValue: bottomSwitch,
                 onChanged: (bool val) {
-                  print('${val}');
+                  print(val.toString());
                   bottomWidget = null;
                   bottomSwitch = val;
                   setState(() {});

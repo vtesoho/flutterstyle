@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_style/page/demo/async_demo.dart';
+import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
 
 class DemoPage extends StatefulWidget {
   DemoPage({Key key}) : super(key: key);
@@ -23,6 +24,14 @@ class _DemoPageState extends State<DemoPage> {
               builder: (context) => AsyncDemo(),
             ));},
             'async',
+          ),
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SqliftDemo(),
+            ));},
+            'sqlift',
           ),
         ],
       ),
