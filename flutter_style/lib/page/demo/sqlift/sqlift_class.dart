@@ -48,40 +48,49 @@ class StatisticData{
     var a = await SqlManager.isTableExits('log');
     if(!a){
       await SqlManager.getCurrentDatabase().then((db) async{
-        await db.execute('CREATE TABLE log (key TEXT, value TEXT)');
-      });
-    }
-    var b = await SqlManager.isTableExits('loga');
-    if(!b){
-      await SqlManager.getCurrentDatabase().then((db) async{
-        await db.execute('CREATE TABLE loga (key TEXT, value TEXT)');
+        print('创建表动作');
+        await db.execute('CREATE TABLE log (id INTEGER PRIMARY KEY AUTOINCREMENT,key TEXT, value TEXT,session Text )');
       });
     }
     await SqlManager.close();
   }
 
-  insert(String key,String value,String tableName) async {
-    print(DateTime.now());
-    SqlManager.getCurrentDatabase().then((db) async {
-      await db.execute("INSERT INTO $tableName (key, value) VALUES ('$key', '$value')");
-      // await db.execute('INSERT INTO "log" ("key","value") VALUES ("111","222")');
+  deleteTable() async{
+    var a = await SqlManager.isTableExits('log');
+    if(!a) return;
+    await SqlManager.getCurrentDatabase().then((db) async{
+      print('删除表动作');
+      await db.rawQuery('DROP TABLE log;');
       await SqlManager.close();
-      print(DateTime.now());
     });
   }
 
-  select(String tableName) async{
+  insert(String key,String value,String session,String tableName) async {
     // print(DateTime.now());
-    var data;
-    await SqlManager.getCurrentDatabase().then((db) async {
-      data = await db.rawQuery('SELECT key, value FROM $tableName;');
+    SqlManager.getCurrentDatabase().then((db) async {
+      await db.execute("INSERT INTO $tableName (key, value,session) VALUES ('$key', '$value','$session')");
+      // await db.execute('INSERT INTO "log" ("key","value") VALUES ("111","222")');
       await SqlManager.close();
-      // print(DateTime.now());
+      print('插入成功');
     });
-    return data;
+  }
+
+  Future select(String tableName,{field}) async{
+    var a = await SqlManager.isTableExits(tableName);
+    var data;
+    if(a) {
+      Database db = await SqlManager.getCurrentDatabase();
+      if(field == null){
+        data = await db.query('$tableName',columns:['key','value','session']);
+      }else{
+        data = await db.rawQuery('SELECT $field FROM $tableName;');
+      }
+      return data;
+    }
   }
 
   delete(String tableName) async{
+    
     SqlManager.getCurrentDatabase().then((db) async {
       var s = await db.delete('$tableName');
       print(s);
@@ -90,27 +99,115 @@ class StatisticData{
   }
 }
 
+
 class StatisticAction{
   var cycleTime = 5;
   Timer time;
+  String tableName = 'log';
+  var newSession;
 
-  init(){
-    if(time != null){
-      time = Timer.periodic(Duration(seconds: cycleTime), (time){
-        print('-adsfsfdsfdsf');
+  static StatisticAction _instance;
+  factory StatisticAction() => _getInstance();
+  StatisticAction._internal();
+  static StatisticAction _getInstance() {
+    if (_instance == null) {
+      _instance = StatisticAction._internal();
+    }
+    return _instance;
+  }
+  //初始化
+  init() async {
+    var a = await SqlManager.isTableExits('log');
+    if(!a){
+      await SqlManager.getCurrentDatabase().then((db) async{
+        print('创建表动作');
+        await db.execute('CREATE TABLE log (id INTEGER PRIMARY KEY AUTOINCREMENT,key TEXT, value TEXT,session Text )');
       });
     }
-  }
-
-  format() async{
-    var a = await StatisticData().select('log');
-    if(a.length > 0){
-      print(a);
+    await SqlManager.close();
+    // 此处获取会话id
+    newSession = 55;
+    if(time == null){
+      time = Timer.periodic(Duration(seconds: cycleTime), (data){
+        readUpdata();
+      });
+      print('init $time');
     }
   }
 
+  //读取上传动作
+  readUpdata() async {
+    Database db = await SqlManager.getCurrentDatabase();
+    //上次异常退出没有上传的log
+    unusualManage();
+    //此次会话id上传的log
+    var lastData = await db.rawQuery('SELECT id FROM $tableName WHERE session = $newSession ORDER BY id desc LIMIT 1;');
+    if(lastData.length > 0){
+      //保存数组最后一个的id
+      var lastId = lastData[0]['id'];
+      print('lastId $lastId');
+      var data = await db.rawQuery('SELECT key,value FROM $tableName WHERE id <= $lastId AND session = $newSession;');
+      bool updataStatus = true;
+      //执行上传动作成功，删除已经读取出来的数据
+      if(updataStatus) {
+        db.rawDelete('DELETE FROM $tableName WHERE id <= $lastId AND session = $newSession');
+      }else{
+        print('删除失败');
+      }
+      print(data);
+    }else{
+      print('没有数据，不需要上传');
+    }
+    await SqlManager.close();
+  }
+
+  unusualManage() async{
+    Database db = await SqlManager.getCurrentDatabase();
+    var data = await db.rawQuery('SELECT * FROM $tableName WHERE id IN (SELECT MAX(id) FROM $tableName GROUP BY session) AND session < $newSession ;');
+    if(data.length > 0){
+      for (var i = 0; i < data.length; i++) {
+        itemSession(data[i]['session']);
+      }
+    }else{
+      print('没有其它会话需要上传的log');
+    }
+  }
+
+  //通过session查找其它没有上传的条目。
+  itemSession(session) async {
+    Database db = await SqlManager.getCurrentDatabase();
+    var data = await db.rawQuery('SELECT key,value FROM $tableName WHERE session = $session;');
+    print(data);
+    bool updataStatus = true;
+    //执行上传动作成功，删除已经读取出来的数据
+    if(updataStatus) {
+      db.rawDelete('DELETE FROM $tableName WHERE session = $session');
+    }else{
+      print('删除失败');
+    }
+  }
+
+
+
   close(){
-    time.cancel();
+    print(time);
+    if(time != null){
+      time.cancel();
+      time = null;
+    }
+  }
+
+  add(index,arguments) async{
+    Database db = await SqlManager.getCurrentDatabase();
+    await db.execute("INSERT INTO $tableName (key, value,session) VALUES ('$index', '$arguments','$newSession')");
+    await SqlManager.close();
+    print('插入成功');
+    // SqlManager.getCurrentDatabase().then((db) async {
+    //   await db.execute("INSERT INTO $tableName (key, value,session) VALUES ('$key', '$value','$session')");
+    //   // await db.execute('INSERT INTO "log" ("key","value") VALUES ("111","222")');
+    //   await SqlManager.close();
+    //   print('插入成功');
+    // });
   }
 
 }
