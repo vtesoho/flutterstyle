@@ -57,7 +57,7 @@ class _SqliftDemoState extends State<SqliftDemo> {
               onPressed: (){
                 var dataa = {'1':'1111111111'};
                 var datas = json.encode(dataa);
-                StatisticAction().add('1', datas);
+                StatisticData().insert('1', datas,'54','log');
               },
               child: Text('执行插入54'),
             ),
@@ -70,10 +70,17 @@ class _SqliftDemoState extends State<SqliftDemo> {
               child: Text('执行插入55'),
             ),
             FlatButton(
+              onPressed: (){
+                var dataa = {'1':'1111111111'};
+                var datas = json.encode(dataa);
+                StatisticAction().add('1', datas);
+              },
+              child: Text('正常插入55'),
+            ),
+            FlatButton(
               onPressed: () async{
                 var a = await StatisticData().select('log');
                 print(a);
-                
               },
               child: Text('展示'),
             ),
@@ -115,6 +122,12 @@ class _SqliftDemoState extends State<SqliftDemo> {
                 StatisticAction().unusualManage();
               },
               child: Text('unusualManage'),
+            ),
+            FlatButton(
+              onPressed: (){
+                print(DateTime.now().millisecondsSinceEpoch.toString().substring(0,10));
+              },
+              child: Text('获取时间'),
             ),
           ],
         ),

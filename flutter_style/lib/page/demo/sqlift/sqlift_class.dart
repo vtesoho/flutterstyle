@@ -169,6 +169,7 @@ class StatisticAction{
         itemSession(data[i]['session']);
       }
     }else{
+      
       print('没有其它会话需要上传的log');
     }
   }
