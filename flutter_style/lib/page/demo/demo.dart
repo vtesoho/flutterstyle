@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_style/page/demo/async_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo.dart';
+import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
 
 class DemoPage extends StatefulWidget {
@@ -42,6 +43,15 @@ class _DemoPageState extends State<DemoPage> {
             ));},
             'HttpDemo',
           ),
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Http2Demo2(),
+            ));},
+            'HttpDemo2',
+          ),
+          // Image.network(src)
         ],
       ),
     );
