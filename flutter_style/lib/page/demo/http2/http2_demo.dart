@@ -26,7 +26,7 @@ class _HttpDemoState extends State<HttpDemo> {
            children: <Widget>[
               GestureDetector(
                 onTap: (){
-                  testHttp('https://content.cdn.shuachi.com/note-pic/5f2fad6d6da815ca9b871561824a255d?imageMogr2/auto-orient/thumbnail/375x/gravity/Center/crop/375x500/quality/85&sign=33872647a7de2268185a0e535fb2e91d&t=5d774eff');
+                  testHttp('https://content.cdn.shuachi.com/note-pic/677901b8bfc8cd323b67bd1b947d5c1f?imageMogr2/auto-orient/thumbnail/375x/gravity/Center/crop/375x500/quality/85&sign=8e26c7693d8a74f1077bd9788c8da809&t=5d7792b0');
                   // testHttp('https://system.cdn.shuachi.com/icon/9eac3fccc6c05938622a775eeca730c61732f2eb.png');
                   // testHttp('https://system.cdn.shuachi.com/icon/0d1ec9e29ff15afb50c5f0e6978633a9b71a65b6.png');
                   // testHttp('https://system.cdn.shuachi.com/icon/df4c612d2362a0ad680a600ea7b024f2e5c72811.png');
@@ -64,6 +64,30 @@ class _HttpDemoState extends State<HttpDemo> {
                   child: Text('测试合并'),
                 ),
               ),
+              GestureDetector(
+                onTap: (){
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/7ae97280910d8fbb4942840161b653f6?imageMogr2/auto-orient/thumbnail/x375/gravity/Center/crop/375x375/quality/85&sign=99f0aeead2ed8d2bfee9311c74aa99db&t=5d77c645');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/6e8af1b80f81f2772ac7fb189b8020e2?imageMogr2/auto-orient/thumbnail/375x/gravity/Center/crop/375x500/quality/85&sign=597b6b5960c8d27f75b20981f6643255&t=5d77c257');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/b5c11582144e1817510f0704a33c608b?imageMogr2/auto-orient/thumbnail/x375/gravity/Center/crop/375x375/quality/85&sign=34a4b3b899cff6e274f87b8050bf8678&t=5d77b4e7');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/4d69134d62ca57f0163fa5a9ed04ea99?imageMogr2/auto-orient/thumbnail/375x/gravity/Center/crop/375x500/quality/85&sign=286f7690b5157b6be51965f505e12733&t=5d77c257');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/66ef9074b112dfed8ea1eaf3454edb9c?imageMogr2/auto-orient/thumbnail/x540/gravity/Center/crop/540x540/quality/85&sign=ca34a2a6b71f89898c19709bddd4acb4&t=5d77ba8e');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/66ef9074b112dfed8ea1eaf3454edb9c?imageMogr2/auto-orient/thumbnail/x540/gravity/Center/crop/540x540/quality/85&sign=ca34a2a6b71f89898c19709bddd4acb4&t=5d77ba8e');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/11fb216b5bb8b5da46d2ed71800ac829?imageMogr2/auto-orient/thumbnail/x540/gravity/Center/crop/540x540/quality/85&sign=ff4fbb92192027e39a6d375a4abf1042&t=5d77ba8e');
+                  ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/a817479b0a81939c1a3d2efc82882f59?imageMogr2/auto-orient/thumbnail/375x/gravity/Center/crop/375x500/quality/85&sign=da486636965866e86e916945bebe24c7&t=5d77a94b');
+
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/weibo@3x.png');
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/pc_dowload_code.png');
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/location.png');
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/shuachibaogao_left.png');
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/shuachibaogao_right.png');
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/like.png');
+                  ImageHttp2Requert().imageRequert('https://www.shuachi.com/shares/web/assets/zipinglunxialajiantou.png');
+                },
+                child: Container(
+                  child: Text('测试连接'),
+                ),
+              ),
+              
               imageBytes != null ? Image.memory(imageBytes) : Text('data'),
               // Image.network("https://system.cdn.shuachi.com/icon/a81a4cd1390713e4ddc7f0d560bc595f6b52dd60.png"),
               // Image.memory(bytes)
@@ -132,6 +156,10 @@ class _HttpDemoState extends State<HttpDemo> {
           
           var name = utf8.decode(header.name);
           var value = utf8.decode(header.value);
+          if(name == ':status' && value != '200'){
+            //返回不为200报错
+            print('返回不为200');
+          }
           print('Header: $name: $value');
         }
       } else if (message is DataStreamMessage) {
@@ -149,7 +177,7 @@ class _HttpDemoState extends State<HttpDemo> {
       offset += chunk.length;
     }
     completer.complete(bytes);
-
+    
     imageBytes = bytes;
     setState(() {
       
@@ -214,6 +242,148 @@ class _HttpDemoState extends State<HttpDemo> {
     
 
     // await transport.finish();
+  }
+
+
+
+
+
+}
+
+
+class ImageHttp2ConnectPool{
+  factory ImageHttp2ConnectPool() => _getInstance();
+  int index =0;
+
+  static ImageHttp2ConnectPool _instance;
+  ImageHttp2ConnectPool._internal() {
+    // imageRequert(url);
+  }
+  static ImageHttp2ConnectPool _getInstance() {
+    if (_instance == null) {
+      _instance = ImageHttp2ConnectPool._internal();
+    }
+    return _instance;
+  }
+
+  Map<String,ClientTransportConnection> viaSocketList = {};
+
+
+
+}
+
+
+class ImageHttp2Requert{
+  factory ImageHttp2Requert() => _getInstance();
+  int index =0;
+
+  static ImageHttp2Requert _instance;
+  ImageHttp2Requert._internal() {
+    // imageRequert(url);
+  }
+  static ImageHttp2Requert _getInstance() {
+    if (_instance == null) {
+      _instance = ImageHttp2Requert._internal();
+    }
+    return _instance;
+  }
+
+  Map<String,ClientTransportConnection> viaSocketList = {};
+  
+
+  imageRequert(url) async{
+    var uri = Uri.parse(url);
+    
+    ClientTransportConnection connect;
+
+    if(connect == null){
+      
+      print('没有连接');
+    }else{
+      print('连接');
+    }
+    if(viaSocketList.containsKey(uri.host)){
+      if(viaSocketList['${uri.host}'].isOpen){
+        connect = viaSocketList['${uri.host}'];
+        print('------------复用了？');
+      }else{
+        connect = ClientTransportConnection.viaSocket(
+          await SecureSocket.connect(
+            uri.host,
+            uri.port,
+            supportedProtocols: ['h2'],
+          ),
+        );
+        viaSocketList['${uri.host}'] = connect;
+        print('------------没复用？');
+      }
+    }else{
+      print('------------key不存在？ index  $index');
+      
+      if(index == 1){
+        connect = ClientTransportConnection.viaSocket(
+          await SecureSocket.connect(
+            uri.host,
+            uri.port,
+            supportedProtocols: ['h2'],
+          ),
+        );
+        viaSocketList['${uri.host}'] = connect;
+        print('已经创建连接 $index');
+      }else{
+        print('已经创建连接bbbb $index');
+      }
+    }
+    
+      
+    // viaSocketList['${uri.host}'] = connect;
+    print('------------viaSocketList ${uri.host} ${viaSocketList["${uri.host}"].isOpen} $viaSocketList');
+    
+    var path = url.replaceAll('${uri.scheme}://${uri.host}', '');
+
+    var stream = connect.makeRequest(
+      [
+        new Header.ascii(':method', 'GET'),
+        new Header.ascii(':path', path),
+        new Header.ascii(':scheme', uri.scheme),
+        new Header.ascii(':authority', uri.host),
+      ],
+      endStream: true,
+    );
+    final Completer<Uint8List> completer = Completer<Uint8List>.sync();
+    final List<List<int>> chunks = <List<int>>[];
+    int contentLength = 0;
+
+    await for (var message in stream.incomingMessages) {
+      if (message is HeadersStreamMessage) {
+        for (var header in message.headers) {
+          var name = utf8.decode(header.name);
+          var value = utf8.decode(header.value);
+          if(name == ':status' && value != '200'){
+            //返回不为200报错
+            print('返回不为200');
+          }
+          // print('Header: $name: $value');
+        }
+      } else if (message is DataStreamMessage) {
+        
+        var bytes = message.bytes;
+        print('-------message $message bytes ${bytes.length}');
+        chunks.add(bytes);
+        contentLength += bytes.length;
+      }
+    }
+
+    final Uint8List bytes = Uint8List(contentLength);
+    int offset = 0;
+    for (List<int> chunk in chunks) {
+      bytes.setRange(offset, offset + chunk.length, chunk);
+      offset += chunk.length;
+    }
+    completer.complete(bytes);
+    return completer.future;
+
+    
   }
 
 
