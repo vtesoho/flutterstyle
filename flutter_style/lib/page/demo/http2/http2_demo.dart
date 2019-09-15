@@ -259,113 +259,60 @@ class _HttpDemoState extends State<HttpDemo> {
 
 }
 
-
-class ImageHttp2ConnectPool{
-  factory ImageHttp2ConnectPool() => _getInstance();
+class ImageHttp2connectManage {
+  Map<String,ClientTransportConnection> viaSocketList = {};
+  Map<String,num> viaSocketListIndex = {};
+  factory ImageHttp2connectManage(url) => _getInstance(url);
   int index =0;
 
-  static ImageHttp2ConnectPool _instance;
-  ImageHttp2ConnectPool._internal() {
+  static ImageHttp2connectManage _instance;
+  ImageHttp2connectManage._internal(url) {
     // imageRequert(url);
   }
-  static ImageHttp2ConnectPool _getInstance() {
+  static ImageHttp2connectManage _getInstance(url) {
     if (_instance == null) {
-      _instance = ImageHttp2ConnectPool._internal();
+      _instance = ImageHttp2connectManage._internal(url);
     }
     return _instance;
   }
 
-  Map viaSocketList = {};
-  ClientTransportConnection connect;
-  String test;
-  Future connectItem(url) async{
+
+
+
+  Future startConnect(url) async{
     Uri uri = Uri.parse(url);
-    await testFun1(url);
-    // if(viaSocketList.containsKey(uri.host)){
-    //   if(viaSocketList['${uri.host}'].isOpen){
-    //     connect = viaSocketList['${uri.host}'];
-    //     print('------------复用了？');
-    //   }else{
-    //     await handelConnect(uri.host,uri.port);
-    //     print('------------没复用？');
-    //   }
-    // }else{
-    //   print('------------key不存在？ index  $index');
-    //   await handelConnect(uri.host,uri.port);
-    //   index = 0;
-    // }
-
-
-    // print('----------sdfsdf');
-    return Future(() => viaSocketList['${uri.host}']);
+    viaSocketListIndex['${uri.host}'] = 0;
+    return Future(()=> handleConnect(url));
   }
 
-  testFun1(url) async{
+  Future handleConnect(url) async{
     Uri uri = Uri.parse(url);
-    for (var i = 0; i < 20; i++) {
-      await Future.delayed(Duration(milliseconds: 50));
-      if(viaSocketList['${uri.host}'] == null){
-        // viaSocketList['${uri.host}'] = '${uri.host}';
-        viaSocketList['${uri.host}'] = await startConnection(uri.host,uri.port);
+
+    for (var i = 0; i < 200; i++) {
+      if(viaSocketListIndex['${uri.host}'] == 0){
+        startConnection(uri.host,uri.port);
         
-        print('全部走这边？ viaSocketList ');
-        print('${viaSocketList["uri.host"]}');
+        print('-----------${uri.host}');
       }else{
-        
+        if(viaSocketList['${uri.host}'] != null && viaSocketList['${uri.host}'].isOpen == false){
+          print('---------走这里了吗？');
+          viaSocketListIndex['${uri.host}'] = 0;
+        }
       }
-      
+      viaSocketListIndex['${uri.host}']++;
+
+      if(viaSocketList['${uri.host}'] != null && viaSocketList['${uri.host}'].isOpen == true){
+        i=1000;
+        
+        return Future(()=> viaSocketList['${uri.host}']);
+        // return Future(()=> 'nnnnn');
+      }
+      print('-----------循环了几次！ $i');
+      await Future.delayed(Duration(milliseconds: 50));
     }
-    print(viaSocketList);
-    return viaSocketList['${uri.host}'];
 
-    // if(viaSocketList['${uri.host}'] == null){
-    //   for (var i = 0; i < 2; i++) {
-    //     print(viaSocketList['${uri.host}']);
-    //     if(viaSocketList['${uri.host}'] != null){
-    //       i = 1000;
-    //     }
-    //     await Future.delayed(Duration(milliseconds: 50));
-        
-        
-    //   }
-    // }else{
-    //   return viaSocketList['${uri.host}'];
-    // }
   }
-
-
-
-  // handelConnect(url) async{
-  //   Uri uri = Uri.parse(url);
-  //   reusableConnect(uri).then((onValue){
-  //     return onValue;
-  //   });
-
-  //   if(viaSocketList.containsKey(uri.host)){
-  //     print('存在？');
-
-  //   }else{
-  //     print('不存在？');
-
-  //     connect = await startConnection(uri.host,uri.port);
-  //     viaSocketList['${uri.host}'] = connect;
-  //   }
-  //   return 
-
-  //   if(index == 0){
-  //     index++;
-  //     connect = await startConnection(host,port);
-  //     viaSocketList['$host'] = connect;
-  //     print('已经创建连接 $index');
-  //     // return Future(()=> connect);
-  //   }else{
-  //     await reusableConnect();
-  //     viaSocketList['$host'] = connect;
-  //     print('不在创建连接 $index');
-  //   }
-  // }
-
-
+  
   Future reusableConnect(Uri uri) async{
     if(viaSocketList['${uri.host}'] == null){
       for (var i = 0; i < 200; i++) {
@@ -378,36 +325,81 @@ class ImageHttp2ConnectPool{
     }
   }
 
-
-
-
   Future startConnection(host,port) async{
-    ClientTransportConnection.viaSocket(
+    viaSocketList['$host'] =ClientTransportConnection.viaSocket(
       await SecureSocket.connect(
         host,
         port,
         supportedProtocols: ['h2'],
       ),
     );
-    return '$host';
-  }
+    print('----------连接了几次？');
 
+    return Future(() => viaSocketList['$host']);
+  }
 }
 
 
 class ImageHttp2Requert{
 
+  createImage() async{
+    var stream = transport.makeRequest(
+      [
+        new Header.ascii(':method', 'GET'),
+        new Header.ascii(':path', path),
+        new Header.ascii(':scheme', uri.scheme),
+        new Header.ascii(':authority', uri.host),
+      ],
+      endStream: true,
+    );
+    
+    // stream.incomingMessages.join()
+
+    final Completer<Uint8List> completer = Completer<Uint8List>.sync();
+    final List<List<int>> chunks = <List<int>>[];
+    int contentLength = 0;
+
+    await for (var message in stream.incomingMessages) {
+      if (message is HeadersStreamMessage) {
+        for (var header in message.headers) {
+          
+          var name = utf8.decode(header.name);
+          var value = utf8.decode(header.value);
+          if(name == ':status' && value != '200'){
+            //返回不为200报错
+            print('返回不为200');
+          }
+          print('Header: $name: $value');
+        }
+      } else if (message is DataStreamMessage) {
+        print('-------message $message');
+        var bytes = message.bytes;
+        chunks.add(bytes);
+        contentLength += bytes.length;
+      }
+    }
+
+    final Uint8List bytes = Uint8List(contentLength);
+    int offset = 0;
+    for (List<int> chunk in chunks) {
+      bytes.setRange(offset, offset + chunk.length, chunk);
+      offset += chunk.length;
+    }
+    completer.complete(bytes);
+    
+  }
+
   imageRequert(url) async{
     ClientTransportConnection connect;
-    connect = await ImageHttp2ConnectPool().connectItem(url).then((onValue){
-      print('-----------测试connect返回 $onValue');
+    connect = await ImageHttp2connectManage(url).startConnect(url).then((onValue){
+      connect = onValue;
+      
+      print('-----------测试connect返回 ${connect.isOpen}');
     });
     
     var uri = Uri.parse(url);
     
       
-    // viaSocketList['${uri.host}'] = connect;
-    // print('------------viaSocketList ${uri.host} ');
     
     var path = url.replaceAll('${uri.scheme}://${uri.host}', '');
 
