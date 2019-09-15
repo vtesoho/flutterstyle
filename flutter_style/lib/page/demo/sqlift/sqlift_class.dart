@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -80,11 +81,16 @@ class StatisticData{
     var data;
     if(a) {
       Database db = await SqlManager.getCurrentDatabase();
-      if(field == null){
-        data = await db.query('$tableName',columns:['key','value','session']);
-      }else{
-        data = await db.rawQuery('SELECT $field FROM $tableName;');
-      }
+      // if(field == null){
+      //   data = await db.query('$tableName',columns:['key','value','session']);
+      // }else{
+      //   data = await db.rawQuery('SELECT $field FROM $tableName;');
+      // }
+      data = await db.rawQuery('SELECT key,value,session FROM $tableName;');
+      // data = jsonDecode(data);
+      data = json.encode(data);
+      data = data.toString().replaceAll('\\"', '"');
+      print('-----------$data');
       return data;
     }
   }
