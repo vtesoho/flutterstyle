@@ -44,14 +44,14 @@ class _DemoPageState extends State<DemoPage> {
             ));},
             'HttpDemo',
           ),
-          styleItem(
-            (){Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Http2Demo2(),
-            ));},
-            'HttpDemo2',
-          ),
+          // styleItem(
+          //   (){Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => Http2Demo2(),
+          //   ));},
+          //   'HttpDemo2',
+          // ),
           // Image.network(src)
         ],
       ),
