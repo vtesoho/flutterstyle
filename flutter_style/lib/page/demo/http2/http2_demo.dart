@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_style/page/demo/http2/bytesToString.dart';
 import 'package:flutter_style/page/demo/http2/http2_imageDemo.dart';
 import 'package:http2/http2.dart';
 class HttpDemo extends StatefulWidget {
@@ -65,6 +66,7 @@ class _HttpDemoState extends State<HttpDemo> {
                   child: Text('测试合并'),
                 ),
               ),
+
               GestureDetector(
                 onTap: (){
                   // ImageHttp2Requert().imageRequert('https://content.cdn.shuachi.com/note-pic/7ae97280910d8fbb4942840161b653f6?imageMogr2/auto-orient/thumbnail/x375/gravity/Center/crop/375x375/quality/85&sign=99f0aeead2ed8d2bfee9311c74aa99db&t=5d77c645');
@@ -107,6 +109,18 @@ class _HttpDemoState extends State<HttpDemo> {
                 },
                 child: Container(
                   child: Text('测试图片'),
+                ),
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BytesToString(),
+                  ));
+                },
+                child: Container(
+                  child: Text('basic转string'),
                 ),
               ),
               
