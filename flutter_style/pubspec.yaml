@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   http2: ^1.0.0
+  flutter_inappbrowser: ^1.2.1
   # angel_framework: ^2.0.4+1
 
   # The following adds the Cupertino Icons font to your application.

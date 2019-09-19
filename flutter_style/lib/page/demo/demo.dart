@@ -44,6 +44,14 @@ class _DemoPageState extends State<DemoPage> {
             ));},
             'HttpDemo',
           ),
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HttpDemo(),
+            ));},
+            'webview',
+          ),
           // styleItem(
           //   (){Navigator.push(
           //   context,
