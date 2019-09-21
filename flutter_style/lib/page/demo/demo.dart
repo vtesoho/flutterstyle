@@ -3,6 +3,7 @@ import 'package:flutter_style/page/demo/async_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
+import 'package:flutter_style/page/demo/webview/inWebview.dart';
 
 class DemoPage extends StatefulWidget {
   DemoPage({Key key}) : super(key: key);
@@ -48,7 +49,7 @@ class _DemoPageState extends State<DemoPage> {
             (){Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HttpDemo(),
+              builder: (context) => InWebview(),
             ));},
             'webview',
           ),

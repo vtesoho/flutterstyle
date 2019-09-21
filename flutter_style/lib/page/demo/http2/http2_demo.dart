@@ -123,7 +123,6 @@ class _HttpDemoState extends State<HttpDemo> {
                   child: Text('basic转string'),
                 ),
               ),
-              
               imageBytes != null ? Image.memory(imageBytes) : Text('data'),
               // Image.network("https://system.cdn.shuachi.com/icon/a81a4cd1390713e4ddc7f0d560bc595f6b52dd60.png"),
               // Image.memory(bytes)
