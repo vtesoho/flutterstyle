@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_style/page/demo/async_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
+import 'package:flutter_style/page/demo/ios13keycarth.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
 import 'package:flutter_style/page/demo/webview/inWebview.dart';
 
@@ -52,6 +53,14 @@ class _DemoPageState extends State<DemoPage> {
               builder: (context) => InWebview(),
             ));},
             'webview',
+          ),
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => IoskeyCrach(),
+            ));},
+            'ios13crach',
           ),
           // styleItem(
           //   (){Navigator.push(
