@@ -16,3 +16,4 @@ class FlutterPlugin {
     return _channel.invokeMethod('loadUrl', url);
   }
 }
+

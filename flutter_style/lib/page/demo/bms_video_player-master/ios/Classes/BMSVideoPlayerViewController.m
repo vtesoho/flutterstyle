@@ -67,6 +67,11 @@
   }  else if ([[call method] isEqualToString:@"paused"]) {
       [_videoView jp_pause];
       result(@YES);
+   }else if ([[call method] isEqualToString:@"resume"]) {
+      NSString *url = @"https://www.runoob.com/try/demo_source/movie.mp4";
+      NSURL* nsUrl = [NSURL URLWithString:url];
+      [_videoView jp_resumePlayWithURL:nsUrl options:kNilOptions configuration:nil];
+//      result(@YES);
    }  else if ([[call method] isEqualToString:@"play"]) {
        [_videoView jp_resume];
        result(@YES);
@@ -143,18 +148,18 @@
     
 
     NSLog(@"width :%f  height: %f",_videoView.frame.size.width,_videoView.frame.size.height);
-//  [_videoView jp_playVideoWithURL:nsUrl
-//                           bufferingIndicator:nil
-//                                  controlView:nil
-//                                 progressView:nil
-//                                configuration:^(UIView *view, JPVideoPlayerModel *playerModel) {
-////                                     self.muteSwitch.on = ![self.videoContainer jp_muted];
-//                                }];
+  [_videoView jp_playVideoWithURL:nsUrl
+                           bufferingIndicator:nil
+                                  controlView:nil
+                                 progressView:nil
+                                configuration:^(UIView *view, JPVideoPlayerModel *playerModel) {
+//                                     self.muteSwitch.on = ![self.videoContainer jp_muted];
+                                }];
     
     
-    [_videoView jp_playVideoMuteWithURL:nsUrl bufferingIndicator:nil progressView:nil configuration:^(UIView *view, JPVideoPlayerModel *playerModel) {
-
-                                    }];
+//    [_videoView jp_playVideoMuteWithURL:nsUrl bufferingIndicator:nil progressView:nil configuration:^(UIView *view, JPVideoPlayerModel *playerModel) {
+//
+//                                    }];
     
     NSLog(@"width :%f  height: %f",_videoView.frame.size.width,_videoView.frame.size.height);
     

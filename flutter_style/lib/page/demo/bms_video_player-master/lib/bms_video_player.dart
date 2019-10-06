@@ -31,6 +31,10 @@ class BmsVideoPlayerController {
     return _channel.invokeMethod('muted');
   }
 
+  Future<void> resume() async {
+    return _channel.invokeMethod('resume');
+  }
+
   Future<void> paused() async {
     return _channel.invokeMethod('paused');
   }
