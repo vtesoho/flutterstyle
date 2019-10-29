@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_style/page/style/app_bar.dart';
 import 'package:flutter_style/page/style/dropDownButtonDemo.dart';
+import 'package:flutter_style/page/style/sliver.dart';
 
 class StylePage extends StatefulWidget {
   StylePage({Key key}) : super(key: key);
@@ -46,6 +47,15 @@ class _StylePageState extends State<StylePage> {
             child: Text('appbar'),
             width: 50,
             height: 50,
+          ),
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SliverDemo(),
+            ));},
+            'sliver',
           ),
         ],
       ),
