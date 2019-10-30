@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_style/page/style/app_bar.dart';
 import 'package:flutter_style/page/style/dropDownButtonDemo.dart';
+import 'package:flutter_style/page/style/multiImagePicker.dart';
 import 'package:flutter_style/page/style/sliver.dart';
 
 class StylePage extends StatefulWidget {
@@ -56,6 +56,15 @@ class _StylePageState extends State<StylePage> {
               builder: (context) => SliverDemo(),
             ));},
             'sliver',
+          ),
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MultiImagePickerDemo(),
+            ));},
+            '选择图片',
           ),
         ],
       ),
