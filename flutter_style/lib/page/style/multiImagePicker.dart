@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_image_picker/material_options.dart';
 import 'dart:async';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
@@ -23,11 +24,12 @@ class _MultiImagePickerDemoState extends State<MultiImagePickerDemo> {
       crossAxisCount: 3,
       children: List.generate(images.length, (index) {
         Asset asset = images[index];
-        return AssetThumb(
-          asset: asset,
-          width: 300,
-          height: 300,
-        );
+        // return AssetThumb(
+        //   asset: asset,
+        //   width: 300,
+        //   height: 300,
+        // );
+        return Text('asset $asset');
       }),
     );
   }
@@ -45,7 +47,7 @@ class _MultiImagePickerDemoState extends State<MultiImagePickerDemo> {
           actionBarColor: "#abcdef",
           actionBarTitle: "Example App",
           allViewTitle: "All Photos",
-          selectCircleStrokeColor: "#000000",
+          // selectCircleStrokeColor: "#000000",
         ),
       );
 

@@ -5,6 +5,7 @@ import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
 import 'package:flutter_style/page/demo/ios13keycarth.dart';
 import 'package:flutter_style/page/demo/listviewpageview.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
+import 'package:flutter_style/page/demo/testDemo/listViewText.dart';
 import 'package:flutter_style/page/demo/webview/inWebview.dart';
 
 class DemoPage extends StatefulWidget {
@@ -71,6 +72,18 @@ class _DemoPageState extends State<DemoPage> {
             ));},
             'ListPageView',
           ),
+
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ListViewTextDemo(),
+            ));},
+            'ListViewTextDemo',
+          ),
+
+          
           // styleItem(
           //   (){Navigator.push(
           //   context,
