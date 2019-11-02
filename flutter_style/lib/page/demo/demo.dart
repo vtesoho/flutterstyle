@@ -3,6 +3,7 @@ import 'package:flutter_style/page/demo/async_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
 import 'package:flutter_style/page/demo/ios13keycarth.dart';
+import 'package:flutter_style/page/demo/listviewCrashe.dart';
 import 'package:flutter_style/page/demo/listviewpageview.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
 import 'package:flutter_style/page/demo/testDemo/listViewText.dart';
@@ -79,6 +80,15 @@ class _DemoPageState extends State<DemoPage> {
             context,
             MaterialPageRoute(
               builder: (context) => ListViewTextDemo(),
+            ));},
+            'ListViewTextDemo',
+          ),
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ListviewCrasheDemo(),
             ));},
             'ListViewTextDemo',
           ),
