@@ -5,6 +5,7 @@ import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
 import 'package:flutter_style/page/demo/ios13keycarth.dart';
 import 'package:flutter_style/page/demo/listviewCrashe.dart';
 import 'package:flutter_style/page/demo/listviewpageview.dart';
+import 'package:flutter_style/page/demo/scanqr.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
 import 'package:flutter_style/page/demo/testDemo/listViewText.dart';
 import 'package:flutter_style/page/demo/webview/inWebview.dart';
@@ -92,6 +93,17 @@ class _DemoPageState extends State<DemoPage> {
             ));},
             'ListViewTextDemo',
           ),
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SacnBody(),
+            ));},
+            'SacnBody',
+          ),
+
+          
 
           
           // styleItem(
