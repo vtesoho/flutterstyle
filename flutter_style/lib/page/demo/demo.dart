@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_style/page/demo/async_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo.dart';
 import 'package:flutter_style/page/demo/http2/http2_demo2.dart';
+import 'package:flutter_style/page/demo/httpPrefix.dart';
 import 'package:flutter_style/page/demo/ios13keycarth.dart';
 import 'package:flutter_style/page/demo/listviewCrashe.dart';
 import 'package:flutter_style/page/demo/listviewpageview.dart';
@@ -102,6 +103,18 @@ class _DemoPageState extends State<DemoPage> {
             ));},
             'SacnBody',
           ),
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HttpPrefix(),
+            ));},
+            'HttpPrefix',
+          ),
+
+
+          
 
           
 
