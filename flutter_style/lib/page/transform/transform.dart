@@ -24,8 +24,8 @@ class _TransformDemoState extends State<TransformDemo> {
       body: Container(
         child: Transform(
           alignment: alignment,
-          transform: transform,
-          
+          transform: transformWidget(),
+          origin: originWidget(),
           child: Container(
             padding: const EdgeInsets.all(8.0),
             color: Colors.deepOrange,
@@ -36,9 +36,34 @@ class _TransformDemoState extends State<TransformDemo> {
     );
   }
 
-  Matrix4 transform = Matrix4.skewX(0.3);
-  transformAction(){
+  
+  double originA = 0.0;
+  double originB = 0.0;
+  
+  Offset originWidget(){
+    return Offset(originA,originB);
+  }
+  originAction(){
     
+  }
+
+  Matrix4 transform = Matrix4.skewX(0.3);
+  int transformType = 0;
+  Matrix4 transformWidget(){
+    switch (transformType) {
+      case 0:
+        return Matrix4.skewY(0.3);
+        break;
+      case 1:
+        
+        break;
+      default:
+        return Matrix4.skewX(0.3);
+    }
+    
+  }
+  transformAction(){
+
   }
 
   Alignment alignment = Alignment.center;
