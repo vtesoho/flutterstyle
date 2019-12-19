@@ -17,6 +17,7 @@ class _TransformDemoState extends State<TransformDemo> {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
+            SizedBox(height: 50,),
             alignmentAction(),
           ],
         ),
@@ -55,20 +56,34 @@ class _TransformDemoState extends State<TransformDemo> {
         return Matrix4.skewY(0.3);
         break;
       case 1:
-        
+        return Matrix4.skewY(0.3);
         break;
       default:
         return Matrix4.skewX(0.3);
     }
-    
+    // return Matrix4.skewX(0.3);
   }
   transformAction(){
 
   }
 
   Alignment alignment = Alignment.center;
+  GlobalKey _alignmentKey = new GlobalKey();
   alignmentAction(){
-
+    return GestureDetector(
+      onTap: (){
+        RenderBox renderBoxRed = _alignmentKey.currentContext.findRenderObject();
+        print(renderBoxRed.size);
+        print(renderBoxRed.localToGlobal(Offset.zero));
+      },
+      child: Container(
+        key: _alignmentKey,
+        color: Colors.red,
+        width: 200,
+        height: 200,
+        child: Text('data'),
+      ),
+    );
   }
 
 

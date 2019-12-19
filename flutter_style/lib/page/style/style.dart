@@ -3,6 +3,7 @@ import 'package:flutter_style/page/style/app_bar.dart';
 import 'package:flutter_style/page/style/dropDownButtonDemo.dart';
 import 'package:flutter_style/page/style/multiImagePicker.dart';
 import 'package:flutter_style/page/style/sliver.dart';
+import 'package:flutter_style/page/transform/transform.dart';
 
 class StylePage extends StatefulWidget {
   StylePage({Key key}) : super(key: key);
@@ -65,6 +66,15 @@ class _StylePageState extends State<StylePage> {
               builder: (context) => MultiImagePickerDemo(),
             ));},
             '选择图片',
+          ),
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TransformDemo(),
+            ));},
+            'TransformDemo',
           ),
         ],
       ),
