@@ -7,6 +7,7 @@ import 'package:flutter_style/page/demo/httpPrefix.dart';
 import 'package:flutter_style/page/demo/ios13keycarth.dart';
 import 'package:flutter_style/page/demo/listviewCrashe.dart';
 import 'package:flutter_style/page/demo/listviewpageview.dart';
+import 'package:flutter_style/page/demo/mixinWebView.dart';
 import 'package:flutter_style/page/demo/scanqr.dart';
 import 'package:flutter_style/page/demo/sqlift/sqlift_demo.dart';
 import 'package:flutter_style/page/demo/testAlign.dart';
@@ -130,6 +131,16 @@ class _DemoPageState extends State<DemoPage> {
               builder: (context) => Reveal(),
             ));},
             'Reveal',
+          ),
+
+
+          styleItem(
+            (){Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MixinWebView(),
+            ));},
+            'MixinWebView',
           ),
           
 
